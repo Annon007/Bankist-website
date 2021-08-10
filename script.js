@@ -9,6 +9,10 @@ const btnCloseModal = document.querySelector('.btn--close-modal');
 const btnsOpenModal = document.querySelectorAll('.btn--show-modal');
 const lodeMore = document.querySelector('.btn--scroll-to');
 const section1 = document.querySelector('#section--1');
+const tab = document.querySelector('.operations__tab-container');
+const tabs = document.querySelectorAll('.operations__tab');
+const contents = document.querySelectorAll('.operations__content');
+
 const openModal = function (e) {
   e.preventDefault();
   modal.classList.remove('hidden');
@@ -44,8 +48,60 @@ lodeMore.addEventListener('click', function (e) {
 ///////////EVENT DELIGATION
 document.querySelector('.nav__links').addEventListener('click', function (e) {
   e.preventDefault();
+  //Matching Strategy
   if (e.target.classList.contains('nav__link')) {
     const id = e.target.getAttribute('href');
     document.querySelector(id).scrollIntoView({ behavior: 'smooth' });
   }
+});
+////active tab
+
+tab.addEventListener('click', function (e) {
+  const clicked = e.target.closest('.operations__tab');
+
+  /// remove avtive tab
+  tabs.forEach(el => el.classList.remove('operations__tab--active'));
+  ///remove active content
+  contents.forEach(c => c.classList.remove('operations__content--active'));
+  ///add active tab
+  if (clicked) {
+    clicked.classList.add('operations__tab--active');
+    console.log(clicked.dataset.tab);
+    //add active content
+    document
+      .querySelector(`.operations__content--${clicked.dataset.tab}`)
+      .classList.add('operations__content--active');
+  }
+});
+///////////////// Event Propagation
+
+const randomInt = (min, max) =>
+  Math.trunc(Math.random() * (max - min + 1) + min);
+const randomColor = () =>
+  `rgb(${randomInt(0, 255)},${randomInt(0, 255)},${randomInt(0, 255)})`;
+console.log(randomColor());
+document.querySelector('.nav__link').addEventListener('click', function (e) {
+  //this is same as {document.querySelector('.nav__link') also e.currentTarget}
+  // .nav__link CHILD ELEMENT
+  // when this Event handeler runs the parents are bubbles up to the parent[S] .nav__links .nav
+  // e in here each of EVENTS receives exact same events
+  // e.target -> where the event happend
+  this.style.backgroundColor = randomColor();
+  console.log('LINK', e.target, e.currentTarget);
+  // STOP propagation
+  // e.stopPropagation();
+});
+document.querySelector('.nav__links').addEventListener('click', function (e) {
+  // .nav__links PARENT of .nav__link
+  //this is same as {document.querySelector('.nav__links')} also e.currentTarget}
+  // e.target -> where the event happend
+  this.style.backgroundColor = randomColor();
+  console.log('CONTAINER', e.target, e.currentTarget);
+});
+document.querySelector('.nav').addEventListener('click', function (e) {
+  // .nav PARENT of .nav__links
+  //this is same as {document.querySelector('.nav')} also e.currentTarget}
+  // e.target -> where the event happend
+  this.style.backgroundColor = randomColor();
+  console.log('NAV', e.target, e.currentTarget);
 });
