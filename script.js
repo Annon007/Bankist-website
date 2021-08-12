@@ -75,33 +75,55 @@ tab.addEventListener('click', function (e) {
 });
 ///////////////// Event Propagation
 
-const randomInt = (min, max) =>
-  Math.trunc(Math.random() * (max - min + 1) + min);
-const randomColor = () =>
-  `rgb(${randomInt(0, 255)},${randomInt(0, 255)},${randomInt(0, 255)})`;
-console.log(randomColor());
-document.querySelector('.nav__link').addEventListener('click', function (e) {
-  //this is same as {document.querySelector('.nav__link') also e.currentTarget}
-  // .nav__link CHILD ELEMENT
-  // when this Event handeler runs the parents are bubbles up to the parent[S] .nav__links .nav
-  // e in here each of EVENTS receives exact same events
-  // e.target -> where the event happend
-  this.style.backgroundColor = randomColor();
-  console.log('LINK', e.target, e.currentTarget);
-  // STOP propagation
-  // e.stopPropagation();
-});
-document.querySelector('.nav__links').addEventListener('click', function (e) {
-  // .nav__links PARENT of .nav__link
-  //this is same as {document.querySelector('.nav__links')} also e.currentTarget}
-  // e.target -> where the event happend
-  this.style.backgroundColor = randomColor();
-  console.log('CONTAINER', e.target, e.currentTarget);
-});
-document.querySelector('.nav').addEventListener('click', function (e) {
-  // .nav PARENT of .nav__links
-  //this is same as {document.querySelector('.nav')} also e.currentTarget}
-  // e.target -> where the event happend
-  this.style.backgroundColor = randomColor();
-  console.log('NAV', e.target, e.currentTarget);
-});
+// const randomInt = (min, max) =>
+//   Math.trunc(Math.random() * (max - min + 1) + min);
+// const randomColor = () =>
+//   `rgb(${randomInt(0, 255)},${randomInt(0, 255)},${randomInt(0, 255)})`;
+// console.log(randomColor());
+// document.querySelector('.nav__link').addEventListener('click', function (e) {
+//   //this is same as {document.querySelector('.nav__link') also e.currentTarget}
+//   // .nav__link CHILD ELEMENT
+//   // when this Event handeler runs the parents are bubbles up to the parent[S] .nav__links .nav
+//   // e in here each of EVENTS receives exact same events
+//   // e.target -> where the event happend
+//   this.style.backgroundColor = randomColor();
+//   console.log('LINK', e.target, e.currentTarget);
+//   // STOP propagation
+//   // e.stopPropagation();
+// });
+// document.querySelector('.nav__links').addEventListener('click', function (e) {
+//   // .nav__links PARENT of .nav__link
+//   //this is same as {document.querySelector('.nav__links')} also e.currentTarget}
+//   // e.target -> where the event happend
+//   this.style.backgroundColor = randomColor();
+//   console.log('CONTAINER', e.target, e.currentTarget);
+// });
+// document.querySelector('.nav').addEventListener('click', function (e) {
+//   // .nav PARENT of .nav__links
+//   //this is same as {document.querySelector('.nav')} also e.currentTarget}
+//   // e.target -> where the event happend
+//   this.style.backgroundColor = randomColor();
+//   console.log('NAV', e.target, e.currentTarget);
+// });
+
+////////////// DOM TRAVERSING
+/*
+const h1 = document.querySelector('h1');
+/// DOWNWARDS : child
+console.log(h1.querySelectorAll('.highlight'));
+console.log(h1.childNodes);
+console.log(h1.children);
+h1.firstElementChild.style.color = 'red';
+h1.lastElementChild.style.color = 'red';
+/// Going UPWARD: parent
+
+console.log(h1.parentNode);
+console.log(h1.parentElement);
+
+h1.closest('h1').style.background = 'var(--gradient-primary)';
+
+// Going SIDEWAYS: siblings
+console.log(h1.previousElementSibling);
+console.log(h1.nextElementSibling);
+console.log(h1.parentElement.children);
+*/
