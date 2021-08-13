@@ -73,6 +73,33 @@ tab.addEventListener('click', function (e) {
       .classList.add('operations__content--active');
   }
 });
+
+//// LINK ANNIMATION
+const nav = document.querySelector('.nav');
+const handleHover = function (e, opacity) {
+  if (e.target.classList.contains('nav__link')) {
+    const link = e.target;
+    const siblings = link.closest('.nav').querySelectorAll('.nav__link');
+    const logo = link.closest('.nav').querySelector('img');
+    siblings.forEach(el => {
+      if (el !== link) el.style.opacity = opacity;
+    });
+    logo.style.opacity = opacity;
+  }
+};
+nav.addEventListener('mouseover', function (e) {
+  handleHover(e, 0.5);
+});
+nav.addEventListener('mouseout', function (e) {
+  handleHover(e, 1);
+});
+////Sticky navigation
+const initialCoord = section1.getBoundingClientRect();
+window.addEventListener('scroll', function (e) {
+  console.log(window.scrollY);
+  if (window.scrollY > initialCoord.top) nav.classList.add('sticky');
+  else nav.classList.remove('sticky');
+});
 ///////////////// Event Propagation
 
 // const randomInt = (min, max) =>
