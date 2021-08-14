@@ -2,7 +2,7 @@
 
 ///////////////////////////////////////
 // Modal window
-
+const header = document.querySelector('.header');
 const modal = document.querySelector('.modal');
 const overlay = document.querySelector('.overlay');
 const btnCloseModal = document.querySelector('.btn--close-modal');
@@ -93,13 +93,45 @@ nav.addEventListener('mouseover', function (e) {
 nav.addEventListener('mouseout', function (e) {
   handleHover(e, 1);
 });
-////Sticky navigation
-const initialCoord = section1.getBoundingClientRect();
-window.addEventListener('scroll', function (e) {
-  console.log(window.scrollY);
-  if (window.scrollY > initialCoord.top) nav.classList.add('sticky');
+////Sticky navigation IntersectionObserver
+
+// const initialCoord = section1.getBoundingClientRect();
+// window.addEventListener('scroll', function (e) {
+//   console.log(window.scrollY);
+//   if (window.scrollY > initialCoord.top) nav.classList.add('sticky');
+//   else nav.classList.remove('sticky');
+// });
+
+const navHeight = nav.getBoundingClientRect().height;
+const headCalback = function (entries) {
+  const [entry] = entries;
+  if (!entry.isIntersecting) nav.classList.add('sticky');
   else nav.classList.remove('sticky');
+};
+const headerObsever = new IntersectionObserver(headCalback, {
+  root: null,
+  threshold: 0,
+  rootMargin: `-${navHeight}px`,
 });
+headerObsever.observe(header);
+
+/////////Revealing Elements
+const sectionCallback = function (entries, observer) {
+  const [entry] = entries;
+  if (!entry.isIntersecting) return;
+  entry.target.classList.remove('section--hidden');
+  observer.unobserve(entry.target);
+};
+const sectionObserver = new IntersectionObserver(sectionCallback, {
+  root: null,
+  threshold: 0.2,
+});
+const allSection = document.querySelectorAll('.section');
+allSection.forEach(sec => {
+  sectionObserver.observe(sec);
+  sec.classList.add('section--hidden');
+});
+
 ///////////////// Event Propagation
 
 // const randomInt = (min, max) =>
